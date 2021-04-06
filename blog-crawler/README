@@ -1,0 +1,7 @@
+1. Install Java JRE / JDK 8
+
+2. Put the links to the blogs in 'blogs.txt' file
+
+3. Run 'java -jar BlogCrawler.jar'. This will create the corpus in XML format
+
+4. Run 'java -jar PlainFileMaker.jar'. This will convert the XML corpus in Plain Text Format
