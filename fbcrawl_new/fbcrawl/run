@@ -1,0 +1,17 @@
+scrapy crawl comments -a lang="en" -a email="riteshkrjnu@gmail.com" -a password="bornini#2012" -a post="https://mbasic.facebook.com/story.php?story_fbid=2971181112903595&id=111102122244856" -o comments/all_comments.csv
+
+scrapy crawl comments -a lang="en" -a email="fbresearch.kmi@gmail.com" -a password="Bornini@2019" -a post="https://mbasic.facebook.com/story.php?story_fbid=2971181112903595&id=111102122244856" -o comments/all_comments.csv
+
+
+
+scrapy crawl comments -a lang="en" -a email="riteshkrjnu@gmail.com" -a password="bornini#2012" -a post="https://mbasic.facebook.com/Russell521641/videos/1639010776252748/UzpfSTE3MTc2NjMwMDg0NjU3NjI6MjY5NjM1NzQxMzkyOTY0NQ/" -o comments/all_comments_m47.csv
+
+scrapy crawl comments -a lang="en" -a email="riteshkrjnu@gmail.com" -a password="bornini#2012" -a post="https://mbasic.facebook.com/114162470332214/photos/a.114173820331079/132437021838092/?type=3&eid=ARC_OofHL8usQgGLZKS2xOsJZGmETl2-kA9niHDjKPfkYgBdLqCiaN_Q3PkmwtmsOoepEoj2ePb4IfGh&__xts__[0]=68.ARAabZrOO0sQg0vx4lfNr-0yD1qELjP3EY2ICoM2DeoT3tNRYyieGDsPfAeBWa8CoULC92OEImATakDCecp6t7e_lC11vfD0UufRiR0IKkRto3iC196aDHOUPL2s70f3seAA1JAl_J_O_yz3jnpRYXQ-z6HQNo1u9FI9KXK7Hk1u974Sa6y-FNPoyMYV0MCAOL3KUsXdvggHTsw-SkeRWM72KlEl-4XBD9b-Y67_qOf3K5mxSyB5PMDyvxou02jqiFHqDr9ml21VLO1gqqiVbXAOikBDi4UFn7lyuvpEpA1IOpgMS8nvQlj8VYdqLxBh8fivopVG6bj98eBYIQlY5N4SdHIddBENXxB1G1FVJY9Fgm-cpgtICaRVYO3QxUK_Am-_1cqPUiML9gXyGrNslahO3Y0_JDM_3_crmsdUy1Yuf-ykutv6Gp1jSAp9bVM-0i13qDCb51Q3qIWJh8Bs2ODCWUBmeQcrE9AN5LF-p707IlOYMcf5ng" -o comments/all_comments_m48.csv
+
+scrapy crawl comments -a lang="en" -a email="riteshkrjnu@gmail.com" -a password="bornini#2012" -a post="https://mbasic.facebook.com/BengaliMemesOfficial/photos/a.602352646484213/3311866625532788/?type=3&eid=ARCM1Fx3ygX-9YvQW82tj0LXkhF8eMwl9caQXqj00nmQqxHZT2x31eV3kKGKbBybfpcUvoMOKP-iELd1&__xts__[0]=68.ARDrncwJ2t-QBhkzLgShxhvKhcTujNEzcJA5gsPSunyqZd9AXN5w0qbwfSI0IvX3s1mtweFpuhSPDxbG0f17yaprGW-Uhf4fVkMoUL5APyNkDiU_Ue_dzDSuJ4MQwpt42aauCZpT_CtMtb2zfvIhEZmm-tls7QAe_d74AL2TpRLT5G4KlOmBo5b1qMACweC95UkaIzfgTPxd_lbf_N5C8Ls3Jlqj5jxPyOSiP7qk6krq3FNAjf_MRNUtO63Q7GRCcvt1VcBpqpAdZJJ8zTGJNY_3AA3w091Qy-XO_5YWzeCK1VHAK1FbROnqF6oWU_qSO-fV-8uc08F-YCsR8dNKfIWxkg" -o comments/all_comments_m49.csv
+
+scrapy crawl comments -a lang="en" -a email="riteshkrjnu@gmail.com" -a password="bornini#2012" -a post="https://mbasic.facebook.com/BengaliMemesOfficial/photos/a.602352646484213/3288952554490862/" -o comments/all_comments_m50.csv
+
+scrapy crawl comments -a lang="en" -a email="riteshkrjnu@gmail.com" -a password="bornini#2012" -a post="https://mbasic.facebook.com/BengaliMemesOfficial/photos/a.602352646484213/3286192104766907/" -o comments/all_comments_m51.csv
+
+scrapy crawl comments -a lang="en" -a email="riteshkrjnu@gmail.com" -a password="bornini#2012" -a post="https://mbasic.facebook.com/BengaliMemesOfficial/photos/a.602352646484213/3286190681433716/" -o comments/all_comments_m52.csv

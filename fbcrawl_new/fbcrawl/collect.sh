@@ -1,0 +1,9 @@
+scrapy crawl fb -a email="sm@abc.com" -a password="pwd" -a page="tfipost.in" -o tfipost_in.csv
+scrapy crawl fb -a email="sm@abc.com" -a password="pwd" -a page="tfipost" -o tfipost.csv
+scrapy crawl fb -a email="sm@abc.com" -a password="pwd" -a page="opindiacom" -o opindia.csv
+scrapy crawl fb -a email="sm@abc.com" -a password="pwd" -a page="TheFrustratedIndian" -o TheFrustratedIndian.csv
+scrapy crawl fb -a email="sm@abc.com" -a password="pwd" -a page="IndiaFacts" -o IndiaFacts.csv
+scrapy crawl fb -a email="sm@abc.com" -a password="pwd" -a page="NewslaundryHindi" -o NewslaundryHindi.csv
+scrapy crawl fb -a email="sm@abc.com" -a password="pwd" -a page="newslaundry" -o newslaundry.csv
+scrapy crawl fb -a email="sm@abc.com" -a password="pwd" -a page="RavishKaPage" -o RavishKaPage.csv
+scrapy crawl fb -a email="sm@abc.com" -a password="pwd" -a page="thewire.in" -o thewirein.csv

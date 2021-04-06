@@ -1,0 +1,19 @@
+STEP 1: Navigate to fbcrawl/fbcrawl
+
+
+STEP 2: Run the following command (replace with your own FB email id, password, name of the page you want to collect data from and name of the file you want to save your file to - please make sure that it is saved inside 'posts' folder, so edit the part ONLY after 'posts/'). Be careful about the name of the page - its in the URL of the page (the part after 'https://www.facebook.com/').
+scrapy crawl fb -a email="sm@abc.com" -a password="pwd" -a page="tfipost.in" -o posts/tfipost_in.csv
+
+
+STEP 3: Go inside the folder 'posts', open any one file in Gedit, copy the field with '/story.php?story_fbid=1111******&id=3456******. This will need to be pasted in the next step for collecting comments
+
+
+STEP 4: Run the following command with appropriate values [DONT change the output file name here]
+#For collecting comments
+scrapy crawl comments -a lang="en" -a email="sm@abc.com" -a password="pwd" -a post="https://mbasic.facebook.com/story.php?story_fbid=1111******&id=3456******" -o comments/all_comments.csv
+
+
+STEP 5: Go inside the folder 'comments' and run 'python3 extract.py'
+
+
+STEP 6: The file 'comments_posts.csv' contains each post followed by comments on them and the file 'only_comments.csv' contains only the comments, without the original posts. The files inside the 'posts' folder contains more metadata related to the posts. Similarly 'all_comments.csv' inside the 'comments' folder contains additional metadata on comments.
