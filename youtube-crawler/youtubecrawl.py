@@ -207,169 +207,180 @@ def getVideoData(vlink):
         urlv = "https://www.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id="+vlink+"&key="+key
         with urllib.request.urlopen(urlv) as url:
             datav = json.loads(url.read())
-        for vdata in datav['items']:
-            # Checking if the video has comments
-            stats = vdata['statistics']
-            cmntc = '0'
-            if 'commentCount' in stats:
-                cmntc = stats['commentCount']
-            print ('Total comments on video', vlink, ':', cmntc)
-            # Proceeding further if there are comments on video
-            if int(cmntc) > 0:
-                metadata = vdata['snippet']
-                dt = metadata['publishedAt']
-                date = dt[:dt.find('T')]
-                time = dt[dt.find('T')+1:]
-                channel = metadata['channelTitle']
-                channel_id = metadata['channelId']
-                title = metadata['title']
-                description = metadata['description']
+            # print(datav)
+        try :
+            for vdata in datav['items']:
+                # Checking if the video has comments
+                stats = vdata['statistics']
+                cmntc = '0'
+                if 'commentCount' in stats:
+                    cmntc = stats['commentCount']
+                print ('Total comments on video', vlink, ':', cmntc)
+                # Proceeding further if there are comments on video
+                if int(cmntc) > 0:
+                    metadata = vdata['snippet']
+                    dt = metadata['publishedAt']
+                    date = dt[:dt.find('T')]
+                    time = dt[dt.find('T')+1:]
+                    channel = metadata['channelTitle']
+                    channel_id = metadata['channelId']
+                    title = metadata['title']
+                    description = metadata['description']
 
-                views = stats['viewCount']
-                likes = stats['likeCount']
-                dislikes = stats['dislikeCount']
+                    views = stats['viewCount']
+                    if 'likeCount' not in stats:
+                        likes = 0
+                    else:
+                        likes = stats['likeCount']
+                    if 'dislikeCount' not in stats:
+                        dislikes = 0
+                    else:    
+                        dislikes = stats['dislikeCount']
+                    
+                    favs = '0'
+                    if 'favouriteCount' in stats:
+                        favs = stats['favouriteCount']
 
-                favs = '0'
-                if 'favouriteCount' in stats:
-                    favs = stats['favouriteCount']
+                    lang = 'NA'
+                    if 'defaultAudioLanguage' in metadata:
+                        lang = metadata['defaultAudioLanguage']
 
-                lang = 'NA'
-                if 'defaultAudioLanguage' in metadata:
-                    lang = metadata['defaultAudioLanguage']
+                    vLink = "https://www.youtube.com/watch?v="+vlink
 
-                vLink = "https://www.youtube.com/watch?v="+vlink
+                    # Increasing file count
+                    video_count += 1
 
-                # Increasing file count
-                video_count += 1
+                    # Adding for CSV File
+                    csv_data.append(['Youtube Corpus ' + str(video_count), vLink])
 
-                # Adding for CSV File
-                csv_data.append(['Youtube Corpus ' + str(video_count), vLink])
+                    # Comment count
+                    ccount = 0
+                    tccount = 0
+                    
+                    # Adding Video Data to XML
+                    co3h = ET.Element('co3h')
+                    async_c = ET.SubElement(co3h, 'asynchronous')
+                    utube = ET.SubElement(async_c, 'youtube_video', {
+                                        'id': str(video_count)})
 
-                # Comment count
-                ccount = 0
-                tccount = 0
+                    async_i = ET.SubElement(utube, 'async_info')
+                    pub = ET.SubElement(async_i, 'publisher')
+                    pub.text = str(channel)
+                    ttl = ET.SubElement(async_i, 'video_title')
+                    ttl.text = str(title)
+                    desc = ET.SubElement(async_i, 'video_description')
+                    desc.text = html2text.html2text (str(description)).strip()
+                    dat = ET.SubElement(async_i, 'date')
+                    dat.text = str(date)
+                    tm = ET.SubElement(async_i, 'time')
+                    tm.text = str(time)
+                    vws = ET.SubElement(async_i, 'total_views')
+                    vws.text = str(views)
+                    lks = ET.SubElement(async_i, 'likes')
+                    lks.text = str(likes)
+                    dlks = ET.SubElement(async_i, 'dislikes')
+                    dlks.text = str(dislikes)
+                    fav = ET.SubElement(async_i, 'favourites')
+                    fav.text = str(favs)
+                    cc = ET.SubElement(async_i, 'total_comments')
+                    cc.text = str(cmntc)
+                    lng = ET.SubElement(async_i, 'audio_language')
+                    lng.text = str(lang)
 
-                # Adding Video Data to XML
-                co3h = ET.Element('co3h')
-                async_c = ET.SubElement(co3h, 'asynchronous')
-                utube = ET.SubElement(async_c, 'youtube_video', {
-                                    'id': str(video_count)})
+                    main = ET.SubElement(utube, 'main_content')
+                    org = ET.SubElement(main, 'original_script', {'name': 'Roman'})
+                    org.text = str(vLink)
 
-                async_i = ET.SubElement(utube, 'async_info')
-                pub = ET.SubElement(async_i, 'publisher')
-                pub.text = str(channel)
-                ttl = ET.SubElement(async_i, 'video_title')
-                ttl.text = str(title)
-                desc = ET.SubElement(async_i, 'video_description')
-                desc.text = html2text.html2text (str(description)).strip()
-                dat = ET.SubElement(async_i, 'date')
-                dat.text = str(date)
-                tm = ET.SubElement(async_i, 'time')
-                tm.text = str(time)
-                vws = ET.SubElement(async_i, 'total_views')
-                vws.text = str(views)
-                lks = ET.SubElement(async_i, 'likes')
-                lks.text = str(likes)
-                dlks = ET.SubElement(async_i, 'dislikes')
-                dlks.text = str(dislikes)
-                fav = ET.SubElement(async_i, 'favourites')
-                fav.text = str(favs)
-                cc = ET.SubElement(async_i, 'total_comments')
-                cc.text = str(cmntc)
-                lng = ET.SubElement(async_i, 'audio_language')
-                lng.text = str(lang)
+                    # Metadata for this video
+                    meta_video = []
+                    meta_video.append(vlink)  # video ID
+                    meta_video.append(channel_id)  # channel ID
+                    meta_video.append('NA')  # comment ID
+                    meta_video.append('youtube_corpus_' +
+                                    str(video_count))  # file name
+                    meta_video.append('NA')  # parent_ID
+                    now = datetime.now()
+                    dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+                    meta_video.append(dt_string)  # current date time
+                    meta.append(meta_video)
 
-                main = ET.SubElement(utube, 'main_content')
-                org = ET.SubElement(main, 'original_script', {'name': 'Roman'})
-                org.text = str(vLink)
+                    # Comments on the video
+                    urlc = "https://www.googleapis.com/youtube/v3/commentThreads?part=snippet,replies&videoId="+vlink+"&key="+key
+                    with urllib.request.urlopen(urlc) as url:
+                        datac = json.loads(url.read())
 
-                # Metadata for this video
-                meta_video = []
-                meta_video.append(vlink)  # video ID
-                meta_video.append(channel_id)  # channel ID
-                meta_video.append('NA')  # comment ID
-                meta_video.append('youtube_corpus_' +
-                                str(video_count))  # file name
-                meta_video.append('NA')  # parent_ID
-                now = datetime.now()
-                dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-                meta_video.append(dt_string)  # current date time
-                meta.append(meta_video)
+                    # get comments from first page
+                    print ('Video:\t', video_count, '\tPage:\t1')
+                    utube = getCommentData(datac, utube, channel_id, vlink)
 
-                # Comments on the video
-                urlc = "https://www.googleapis.com/youtube/v3/commentThreads?part=snippet,replies&videoId="+vlink+"&key="+key
-                with urllib.request.urlopen(urlc) as url:
-                    datac = json.loads(url.read())
+                    # checking for more pages
+                    #totalResults = int(datac['pageInfo']['totalResults'])
+                    totalResults = int(cmntc)
+                    perPage = int(datac['pageInfo']['resultsPerPage'])
+                    totalPages = int(totalResults / perPage)
+                    print ('Total', (totalPages+1), 'pages of comments in video', vlink)
+                    print ('Per page:', perPage, '\tTotal Pages:', (totalPages+1), '\tTotal Results:', totalResults)
 
-                # get comments from first page
-                print ('Video:\t', video_count, '\tPage:\t1')
-                utube = getCommentData(datac, utube, channel_id, vlink)
-
-                # checking for more pages
-                #totalResults = int(datac['pageInfo']['totalResults'])
-                totalResults = int(cmntc)
-                perPage = int(datac['pageInfo']['resultsPerPage'])
-                totalPages = int(totalResults / perPage)
-                print ('Total', (totalPages+1), 'pages of comments in video', vlink)
-                print ('Per page:', perPage, '\tTotal Pages:', (totalPages+1), '\tTotal Results:', totalResults)
-
-                # Iterating through multiple pages of videos on the channel
-                if totalResults > perPage:
-                    for i in range(totalPages):
-                        if 'nextPageToken' in datac:
-                            pToken = datac['nextPageToken']
-                            #print (pToken)
-                            urlc = "https://www.googleapis.com/youtube/v3/commentThreads?part=snippet,replies&videoId=" + \
-                                vlink+"&key="+key+"&pageToken="+pToken
-                            #print (urlc)
-                            try:
-                                with urllib.request.urlopen(urlc) as url:
-                                    datac = json.loads(url.read())
-                                
-                                # get data from next pages
+                    # Iterating through multiple pages of videos on the channel
+                    if totalResults > perPage:
+                        for i in range(totalPages):
+                            if 'nextPageToken' in datac:
+                                pToken = datac['nextPageToken']
+                                #print (pToken)
+                                urlc = "https://www.googleapis.com/youtube/v3/commentThreads?part=snippet,replies&videoId=" + \
+                                    vlink+"&key="+key+"&pageToken="+pToken
+                                #print (urlc)
+                                try:
+                                    with urllib.request.urlopen(urlc) as url:
+                                        datac = json.loads(url.read())
+                                    
+                                    # get data from next pages
+                                    print ('Video:\t', video_count, '\tPage:\t', (i+2))
+                                    utube = getCommentData(
+                                        datac, utube, channel_id, vlink)
+                                except Exception as e:
+                                    print ('Exception:', e)
+                                    print (urlc)
+                                    print ('Page', i, 'out of total', totalPages, 'pages of comments')
+                                    print ('Expected total comments', totalResults)
+                                    print ('Expected complete', ccount)
+                                    print ('The program will now exit without writing data from video', video_count)
+                                    quit(403)
+                            else:
                                 print ('Video:\t', video_count, '\tPage:\t', (i+2))
-                                utube = getCommentData(
-                                    datac, utube, channel_id, vlink)
-                            except Exception as e:
-                                print ('Exception:', e)
-                                print (urlc)
-                                print ('Page', i, 'out of total', totalPages, 'pages of comments')
-                                print ('Expected total comments', totalResults)
-                                print ('Expected complete', ccount)
-                                print ('The program will now exit without writing data from video', video_count)
-                                quit(403)
-                        else:
-                            print ('Video:\t', video_count, '\tPage:\t', (i+2))
-                            print ('Total Comments:\t', tccount)
-                            print ('No more next pages')
-                            if tccount != cmntc:
-                                cc.text = str(tccount)
-                            break
+                                print ('Total Comments:\t', tccount)
+                                print ('No more next pages')
+                                if tccount != cmntc:
+                                    cc.text = str(tccount)
+                                break
 
 
 
-                print ('Crawling complete. Now writing data and metadata to file')
-                # XML to String
-                #complete = ET.tostring(co3h)
-                complete = minidom.parseString(ET.tostring(co3h)).toprettyxml(indent="   ")
+                    print ('Crawling complete. Now writing data and metadata to file')
+                    # XML to String
+                    #complete = ET.tostring(co3h)
+                    complete = minidom.parseString(ET.tostring(co3h)).toprettyxml(indent="   ")
 
-                # File Name
-                fname = 'youtube_corpus_'+str(video_count)
+                    # File Name
+                    fname = 'youtube_corpus_'+str(video_count)
 
-                # Writing XML File
-                with open('xml-data-youtube/' + fname + '.xml', 'w') as f_w:
-                    f_w.write(complete)
+                    # Writing XML File
+                    with open('xml-data-youtube/' + fname + '.xml', 'w') as f_w:
+                        f_w.write(complete)
 
-                # Writing CSV File
-                with open('csv-data-youtube/' + fname + '.csv', 'w') as f_w:
-                    writer = csv.writer(f_w, delimiter='\t')
-                    writer.writerows(csv_data)
+                    # Writing CSV File
+                    with open('csv-data-youtube/' + fname + '.csv', 'w') as f_w:
+                        writer = csv.writer(f_w, delimiter='\t')
+                        writer.writerows(csv_data)
 
-                # Writing metadata file
-                with open('youTubeLinks.tsv', 'a') as f_w:
-                    writer = csv.writer(f_w, delimiter='\t')
-                    writer.writerows(meta)
-
+                    # Writing metadata file
+                    with open('youTubeLinks.tsv', 'a') as f_w:
+                        writer = csv.writer(f_w, delimiter='\t')
+                        writer.writerows(meta)
+        except Exception:
+            # traceback.print_exc()
+            with open('linksnotparse.txt', 'a') as notparse:
+                notparse.write("https://www.youtube.com/watch?v="+vlink+"\n")
 
 #Function for retrieving the API key
 def getKey():
