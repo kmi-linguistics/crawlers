@@ -439,10 +439,10 @@ def getList():
     if os.path.exists('channels.txt'):
         with open('channels.txt') as f:
             for channel in f:
-                if channel in channel:
+                if 'channel' in channel:
                     channel_id = channel [channel.find ('channel/')+8:].strip()
                 else:
-                    channel_id = channel
+                    channel_id = channel.strip()
                 print ('Channel id', channel_id, 'added')
                 ytids.append([channel_id.strip(), "id"])
     else:
