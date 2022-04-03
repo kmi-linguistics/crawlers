@@ -357,28 +357,67 @@ def getVideoData(vlink):
 
 
                     print ('Crawling complete. Now writing data and metadata to file')
-                    # XML to String
-                    #complete = ET.tostring(co3h)
-                    complete = minidom.parseString(ET.tostring(co3h)).toprettyxml(indent="   ")
-
                     # File Name
                     fname = 'youtube_corpus_'+str(video_count)
 
-                    # Writing XML File
-                    with open('xml-data-youtube/' + fname + '.xml', 'w') as f_w:
-                        f_w.write(complete)
+                    # XML to String
+                    #complete = ET.tostring(co3h)
+                    try:
+                        complete = minidom.parseString(ET.tostring(co3h)).toprettyxml(indent="   ")
+
+                        # Writing XML File
+                        with open('xml-data-youtube/' + fname + '.xml', 'w') as f_w:
+                            f_w.write(complete)
+                    except Exception as e:
+                        print ('Error in parsing and writing XML')
+                        print ('Error', e)
+                        print ('trying to write unformatted XML')
+                        try:
+                            with open('xml-data-youtube/' + fname + '.xml', 'w') as f_w:
+                                f_w.write(ET.tostring(co3h))
+                        except Exception as e:
+                            print ('Error in writing unformatted XML')
+                            print ('Error', e)
+                            print ('Creating a blank XML file')
+                            with open('xml-data-youtube/' + fname + '.xml', 'w') as f_w:
+                                f_w.write('Error in writing XML')
+                            
+                            with open('xmlfilenotcreated.txt', 'a') as noxml:
+                                noxml.write("https://www.youtube.com/watch?v="+vlink+"\n")
+
 
                     # Writing CSV File
-                    with open('csv-data-youtube/' + fname + '.csv', 'w') as f_w:
-                        writer = csv.writer(f_w, delimiter='\t')
-                        writer.writerows(csv_data)
+                    try:
+                        with open('csv-data-youtube/' + fname + '.csv', 'w') as f_w:
+                            writer = csv.writer(f_w, delimiter='\t')
+                            writer.writerows(csv_data)
+                    except Exception as e:
+                        print ('Error in writing CSV')
+                        print ('Error', e)
+                        print ('Creating a blank CSV file')
+                        with open('csv-data-youtube/' + fname + '.csv', 'w') as f_w:
+                            writer = csv.writer(f_w, delimiter='\t')
+                            writer.writerows('Error!')
+
+                        with open('csvfilenotcreated.txt', 'a') as nocsv:
+                            nocsv.write("https://www.youtube.com/watch?v="+vlink+"\n")
 
                     # Writing metadata file
-                    with open('youTubeLinks.tsv', 'a') as f_w:
-                        writer = csv.writer(f_w, delimiter='\t')
-                        writer.writerows(meta)
-        except Exception:
+                    try:
+                        with open('youTubeLinks.tsv', 'a') as f_w:
+                            writer = csv.writer(f_w, delimiter='\t')
+                            writer.writerows(meta)
+                    except Exception as e:
+                        print ('Error in writing metadata')
+                        print ('Error', e)
+
+        except Exception as e:
             # traceback.print_exc()
+            print ('Error', e)
+            xml_data = 'xml-data-youtube/' + fname + '.xml'
+            csv_data = 'csv-data-youtube/' + fname + '.csv'
+            if not (os.path.exists(xml_data) and os.path.exists(csv_data)):
+                video_count -= 1
             with open('linksnotparse.txt', 'a') as notparse:
                 notparse.write("https://www.youtube.com/watch?v="+vlink+"\n")
 
@@ -400,7 +439,9 @@ def getList():
     if os.path.exists('channels.txt'):
         with open('channels.txt') as f:
             for channel in f:
-                ytids.append([channel.strip(), "id"])
+                channel_id = channel [channel.find ('channel/')+8:].strip()
+                print ('Channel id', channel_id, 'added')
+                ytids.append([channel_id.strip(), "id"])
     else:
         print(
             'List of channels not found. Please give the ID of channels in channels.txt file')
